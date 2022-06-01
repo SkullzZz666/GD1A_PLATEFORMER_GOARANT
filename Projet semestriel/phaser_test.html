@@ -287,8 +287,9 @@
 
 
 
-
-
+                var positionactu
+                var position
+                var positionInter
                 var VelocityX
                 var config
                 var platforms;
@@ -330,39 +331,42 @@
                 this.physics.world.setBounds(0, 0, 15000, 4200);
                 this.cameras.main.startFollow(this.player);
                 this.player.body.gravity.y = 200;
-                this.player.body.gravity.x = 30000;
                 this.cameras.main.zoom = 0.5;
-                };
+                this.positionactu = 0;
+            };
 
 
 
-                
-            
-        update() {
-            console.log(this.player.body.velocity)
-            if (this.cursors.left.isDown){ //si la touche gauche est appuyée
-                this.player.setVelocityX(-160); //alors vitesse négative en X
-                this.player.anims.play('left', true);
+
+
+            update() {
+                console.log(this.player.body.velocity.x)
+                if (this.cursors.left.isDown) { //si la touche gauche est appuyée
+                    this.player.setVelocityX(140); //alors vitesse négative en X
+                    this.player.anims.play('left', true);
                 }
-                else if (this.cursors.right.isDown){ //sinon si la touche droite est appuyée
-                this.player.setVelocityX(160); //alors vitesse positive en X
-                this.player.anims.play('right', true);
+                else if (this.cursors.right.isDown) { //sinon si la touche droite est appuyée
+                    this.player.setVelocityX(300); //alors vitesse positive en X
+                    this.player.anims.play('right', true);
                 }
-                else{ // sinon
-                this.player.setVelocityX(0); //vitesse nulle
-                this.player.anims.play('turn');
+                else { // sinon
+                    this.player.setVelocityX(400); //vitesse nulle
+                    this.player.anims.play('turn');
                 }
                 if (this.cursors.up.isDown && this.player.body.blocked.down) {
-                this.player.setVelocityY(-220);
-                
+                    this.player.setVelocityY(-220);
+
                 }
-                if(this.player.body.velocity <=0){
+                if (this.player.body.velocity.x <= 0 && (this.player.body.onFloor())) {
                     console.log("caca")
                     this.gameOver = true
-                this.player.scene.scene.restart()
                 }
-        }
 
+                if (this.gameOver == true) {
+                    this.scene.restart()
+                    this.gameOver = false
+                }
+            }
         }
         config = {
             type: Phaser.AUTO,
@@ -424,13 +428,13 @@
             physics: {
                 default: 'arcade',
                 arcade: {
-                    gravity: { y: 400, x: 200},
+                    gravity: { y: 400, x: 200 },
                     debug: true
                 }
             },
 
             scene: [Depart, Hub, Niveau1, Niveau2, Niveau3]
-            
+
         };
         new Phaser.Game(config);
 
