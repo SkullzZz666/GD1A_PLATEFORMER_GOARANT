@@ -342,11 +342,11 @@
             update() {
                 console.log(this.player.body.velocity.x)
                 if (this.cursors.left.isDown) { //si la touche gauche est appuyée
-                    this.player.setVelocityX(140); //alors vitesse négative en X
+                    this.player.setVelocityX(300); //alors vitesse négative en X
                     this.player.anims.play('left', true);
                 }
                 else if (this.cursors.right.isDown) { //sinon si la touche droite est appuyée
-                    this.player.setVelocityX(300); //alors vitesse positive en X
+                    this.player.setVelocityX(600); //alors vitesse positive en X
                     this.player.anims.play('right', true);
                 }
                 else { // sinon
