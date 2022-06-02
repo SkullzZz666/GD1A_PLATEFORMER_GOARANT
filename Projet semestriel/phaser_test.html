@@ -271,7 +271,7 @@
 
             preload() {
                 this.load.image("tiles", "assets/Sprite_pour_test.png")
-                this.load.image("tiles", "assets/Sprite_sheets.png")
+                this.load.image("tiles2", "assets/Sprite_sheets.png")
                 this.load.tilemapTiledJSON("map", "Map_Zelda_Like..JSON");
                 this.load.image('star', 'assets/star.png');
                 this.load.spritesheet('perso', 'assets/perso.png',
@@ -288,26 +288,26 @@
 
                 const carteDuNiveau = this.add.tilemap("map");
                 this.background = this.add.image(450, 200, 'background');
+                
+                const decor = carteDuNiveau.addTilesetImage(
+                    "sprite_sheets",
+                    "tiles2"
+                );
                 const tileset = carteDuNiveau.addTilesetImage(
                     "Sprite_pour_test",
                     "tiles"
                 );
-                const decor = carteDuNiveau.addTilesetImage(
-                    "Sprite_sheets",
-                    "tiles"
-                );
-        
                 this.background.setScrollFactor(0)
-                this.decor = carteDuNiveau.createStaticLayer(
-                    "decor",
-                    tileset
-                );
+                
                 this.sol = carteDuNiveau.createStaticLayer(
                     "bordures",
                     tileset
                 );
 
-
+                this.decor = carteDuNiveau.createStaticLayer(
+                    "decor",
+                    decor
+                );
 
                 
                 var positionactu
