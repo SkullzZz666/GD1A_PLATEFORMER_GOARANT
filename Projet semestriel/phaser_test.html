@@ -271,13 +271,14 @@
 
             preload() {
                 this.load.image("tiles", "assets/Sprite_pour_test.png")
+                this.load.image("tiles", "assets/Sprite_sheets.png")
                 this.load.tilemapTiledJSON("map", "Map_Zelda_Like..JSON");
                 this.load.image('star', 'assets/star.png');
                 this.load.spritesheet('perso', 'assets/perso.png',
                     { frameWidth: 32, frameHeight: 34 });
                 this.load.image('Bloc', 'assets/BLOCINVISIBLE.png');
-                this.load.image('background', 'assets/Background_level_colereV2');
-
+                this.load.image('background', 'assets/Background_level_colereV3.png');
+                
             }
 
 
@@ -286,16 +287,26 @@
 
 
                 const carteDuNiveau = this.add.tilemap("map");
-                this.add.image(400, 300, 'background');
+                this.background = this.add.image(450, 200, 'background');
                 const tileset = carteDuNiveau.addTilesetImage(
                     "Sprite_pour_test",
                     "tiles"
                 );
-
+                const decor = carteDuNiveau.addTilesetImage(
+                    "Sprite_sheets",
+                    "tiles"
+                );
+        
+                this.background.setScrollFactor(0)
+                this.decor = carteDuNiveau.createStaticLayer(
+                    "decor",
+                    tileset
+                );
                 this.sol = carteDuNiveau.createStaticLayer(
                     "bordures",
                     tileset
                 );
+
 
 
                 
@@ -310,7 +321,7 @@
                 var gameOver = false;
                 var spacebar
                 var keyT
-                this.player = this.physics.add.sprite(0, 0, 'perso');
+                this.player = this.physics.add.sprite(0, 370, 'perso');
                 this.player.setCollideWorldBounds(true);
 
                 this.sol.setCollisionByProperty({ estSolide: true });
@@ -341,9 +352,9 @@
                 this.cameras.main.setBounds(0, 0, 15000, 4200);
                 this.physics.world.setBounds(0, 0, 15000, 4200);
                 this.cameras.main.startFollow(this.player);
-                this.cameras.main.followOffset.set (-400, 0);
+                this.cameras.main.followOffset.set (-325, 0);
                 this.player.body.gravity.y = 200;
-                this.cameras.main.zoom = 1.5;
+                this.cameras.main.zoom = 1;
                 
             };
 
@@ -366,7 +377,7 @@
                     this.player.anims.play('turn');
                 }
                 if (this.cursors.up.isDown && this.player.body.blocked.down) {
-                    this.player.setVelocityY(-250);
+                    this.player.setVelocityY(-270);
 
                 }
                 if (this.player.body.velocity.x <= 0 && (this.player.body.onFloor())) {
@@ -386,7 +397,7 @@
         }
         config = {
             type: Phaser.AUTO,
-            width: 1920, height: 1080,
+            width: 896, height: 448,
             physics: {
                 default: 'arcade',
                 arcade: {
@@ -440,7 +451,7 @@
 
         var config = {
             type: Phaser.AUTO,
-            width: 1920, height: 1080,
+            width: 896, height: 448,
             physics: {
                 default: 'arcade',
                 arcade: {
