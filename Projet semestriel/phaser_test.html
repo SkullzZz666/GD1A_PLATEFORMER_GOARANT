@@ -277,12 +277,13 @@
                 this.load.image("tiles2", "assets/Sprite_sheets.png")
                 this.load.tilemapTiledJSON("map", "Map_Zelda_Like..JSON");
                 this.load.image('star', 'assets/star.png');
-                this.load.spritesheet('perso', 'assets/perso.png',
+                this.load.spritesheet('perso', 'assets/Hero.png',
                     { frameWidth: 32, frameHeight: 34 });
                 this.load.image('Bloc', 'assets/BLOCINVISIBLE.png');
                 this.load.image('background', 'assets/Background_level_colereV3.png');
                 this.load.image('projectile_tristesse', 'assets/Projectile.png');
                 this.load.image('projectile_colere', 'assets/Projectile_colere.png')
+                //this.load.image('Bloc_cassable', 'assets/Bloc_cassable_tristesse.png')
 
             }
 
@@ -342,8 +343,9 @@
                 });
                 this.anims.create({
                     key: 'turn',
-                    frames: [{ key: 'perso', frame: 4 }],
-                    frameRate: 20
+                    frames: this.anims.generateFrameNumbers('perso', { start: 5, end: 8 }),
+                    frameRate: 10,
+                    repeat: -1
                 });
                 this.anims.create({
                     key: 'right',
@@ -360,6 +362,7 @@
                 this.cameras.main.startFollow(this.player);
                 this.cameras.main.followOffset.set(-325, 0);
                 this.player.body.gravity.y = 200;
+                this.player.setSize (20, 32);
                 this.cameras.main.zoom = 0.90;
 
                 this.projectileP = this.physics.add.group({ allowGravity: false, });
@@ -377,7 +380,7 @@
 
 
 
-                this.scoreText = this.add.text(0, 0, 'Mort: ' + this.ScoreM, { fontSize: '32px', fill: '#fff' }).setSize(5).setScrollFactor(0)
+                this.scoreText = this.add.text(0, 0, 'Deaths: ' + this.ScoreM, {fontFamily:'Georgia', fontSize: '32px', fill: '#fff' }).setSize(5).setScrollFactor(0)
 
             };
 
@@ -484,13 +487,14 @@
 
 
         var config = {
+            pixelArt: true,
             type: Phaser.AUTO,
             width: 896, height: 448,
             physics: {
                 default: 'arcade',
                 arcade: {
                     gravity: { y: 400, x: 200 },
-                    debug: false
+                    debug: true
                 }
             },
 
