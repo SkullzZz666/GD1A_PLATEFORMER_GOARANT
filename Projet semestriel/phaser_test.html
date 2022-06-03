@@ -268,6 +268,9 @@
         //**********************************************************************//
         class Niveau1 extends Phaser.Scene {
             constructor() { super("niveau1"); }
+            init(data) {
+                this.Score = data.Score
+            }
 
             preload() {
                 this.load.image("tiles", "assets/Sprite_pour_test.png")
@@ -278,7 +281,9 @@
                     { frameWidth: 32, frameHeight: 34 });
                 this.load.image('Bloc', 'assets/BLOCINVISIBLE.png');
                 this.load.image('background', 'assets/Background_level_colereV3.png');
-                this.load.image('projectile', 'assets/Projectile.png');
+                this.load.image('projectile_tristesse', 'assets/Projectile.png');
+                this.load.image('projectile_colere', 'assets/Projectile_colere.png')
+
             }
 
 
@@ -288,6 +293,7 @@
 
                 const carteDuNiveau = this.add.tilemap("map");
                 this.background = this.add.image(450, 225, 'background');
+                this.background.setScale(1.11)
 
                 const decor = carteDuNiveau.addTilesetImage(
                     "sprite_sheets",
@@ -354,12 +360,24 @@
                 this.cameras.main.startFollow(this.player);
                 this.cameras.main.followOffset.set(-325, 0);
                 this.player.body.gravity.y = 200;
-                this.cameras.main.zoom = 1;
+                this.cameras.main.zoom = 0.90;
 
-                this.projectileP = this.physics.add.group({allowGravity: false,});
+                this.projectileP = this.physics.add.group({ allowGravity: false, });
                 //this.physics.add.collider(this.projectile, this.destructibles, cleanProj, null, this);
                 //this.physics.add.collider(this.projectileP, this.sentinelles, degatMonstre, null, this);
-                
+                if (typeof this.Score == 'undefined') {
+                    this.Score = 0;
+                }
+
+
+
+                if (!this.hasOwnProperty('ScoreM')) {
+                    this.ScoreM = this.Score;
+                }
+
+
+
+                this.scoreText = this.add.text(0, 0, 'Mort: ' + this.ScoreM, { fontSize: '32px', fill: '#fff' }).setSize(5).setScrollFactor(0)
 
             };
 
@@ -392,6 +410,7 @@
 
                 if (this.gameOver == true) {
                     this.scene.restart()
+                    this.ScoreM +=1;
                     this.gameOver = false
                 }
                 if (this.player.body.blocked.right) {
@@ -399,7 +418,7 @@
                     this.player.scene.scene.restart();
                 }
                 if (Phaser.Input.Keyboard.JustDown(this.keyT)) {
-                    this.proj = this.projectileP.create(this.player.x, this.player.y, 'projectilecolere').setScale(1.25);
+                    this.proj = this.projectileP.create(this.player.x, this.player.y, 'projectile_colere').setScale(1.25);
                     tirer(this.player, this.proj);
                 }
                 function tirer(player, proj) {
