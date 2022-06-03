@@ -278,7 +278,7 @@
                     { frameWidth: 32, frameHeight: 34 });
                 this.load.image('Bloc', 'assets/BLOCINVISIBLE.png');
                 this.load.image('background', 'assets/Background_level_colereV3.png');
-                
+                this.load.image('projectile', 'assets/Projectile.png');
             }
 
 
@@ -288,7 +288,7 @@
 
                 const carteDuNiveau = this.add.tilemap("map");
                 this.background = this.add.image(450, 225, 'background');
-                
+
                 const decor = carteDuNiveau.addTilesetImage(
                     "sprite_sheets",
                     "tiles2"
@@ -298,7 +298,7 @@
                     "tiles"
                 );
                 this.background.setScrollFactor(0)
-                
+
                 this.sol = carteDuNiveau.createStaticLayer(
                     "bordures",
                     tileset
@@ -309,7 +309,7 @@
                     decor
                 );
 
-                
+
                 var positionactu
                 var position
                 var positionInter
@@ -352,10 +352,15 @@
                 this.cameras.main.setBounds(0, 0, 15000, 4200);
                 this.physics.world.setBounds(0, 0, 15000, 4200);
                 this.cameras.main.startFollow(this.player);
-                this.cameras.main.followOffset.set (-325, 0);
+                this.cameras.main.followOffset.set(-325, 0);
                 this.player.body.gravity.y = 200;
                 this.cameras.main.zoom = 1;
+
+                this.projectileP = this.physics.add.group({allowGravity: false,});
+                //this.physics.add.collider(this.projectile, this.destructibles, cleanProj, null, this);
+                //this.physics.add.collider(this.projectileP, this.sentinelles, degatMonstre, null, this);
                 
+
             };
 
 
@@ -365,7 +370,7 @@
             update() {
                 console.log(this.player.body.blocked.right)
                 if (this.cursors.left.isDown) { //si la touche gauche est appuyée
-                    this.player.setVelocityX(300); //alors vitesse négative en X
+                    this.player.setVelocityX(280); //alors vitesse négative en X
                     this.player.anims.play('left', true);
                 }
                 else if (this.cursors.right.isDown) { //sinon si la touche droite est appuyée
@@ -373,7 +378,7 @@
                     this.player.anims.play('right', true);
                 }
                 else { // sinon
-                    this.player.setVelocityX(400); //vitesse nulle
+                    this.player.setVelocityX(350); //vitesse nulle
                     this.player.anims.play('turn');
                 }
                 if (this.cursors.up.isDown && this.player.body.blocked.down) {
@@ -389,9 +394,19 @@
                     this.scene.restart()
                     this.gameOver = false
                 }
-                if (this.player.body.blocked.right){
+                if (this.player.body.blocked.right) {
                     this.gameOver = true;
                     this.player.scene.scene.restart();
+                }
+                if (Phaser.Input.Keyboard.JustDown(this.keyT)) {
+                    this.proj = this.projectileP.create(this.player.x, this.player.y, 'projectilecolere').setScale(1.25);
+                    tirer(this.player, this.proj);
+                }
+                function tirer(player, proj) {
+                    proj.origineX = player.x;
+                    proj.origineY = player.y;
+                    proj.setVelocity(600, 0);
+
                 }
             }
         }
@@ -456,7 +471,7 @@
                 default: 'arcade',
                 arcade: {
                     gravity: { y: 400, x: 200 },
-                    debug: true
+                    debug: false
                 }
             },
 
