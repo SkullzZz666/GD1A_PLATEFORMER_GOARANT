@@ -236,33 +236,6 @@
         }
 
 
-
-        //**********************************************************************//
-        //                          Scène Hub                                   //
-        //**********************************************************************//
-        class Hub extends Phaser.Scene {
-            constructor() { super("hub"); }
-            preload() { }
-
-
-            create() {
-                var platforms;
-                var player;
-                var cursors;
-                var stars;
-                var score;
-                score = 0
-                var bombs = false;
-                var gameOver = false;
-                var spacebar
-                var keyT
-            }
-
-
-            update() { }
-        }
-
-
         //**********************************************************************//
         //                          Scène Niveau 1                              //
         //**********************************************************************//
@@ -471,7 +444,7 @@
         //**********************************************************************//
         //                          Scène Niveau 3                              //
         //**********************************************************************//
-        class Niveau3 extends Phaser.Scene {
+        class Ecran_victoire extends Phaser.Scene {
             constructor() { super("Niveau3"); }
             preload() { }
 
@@ -498,7 +471,7 @@
                 }
             },
 
-            scene: [Depart, Hub, Niveau1, Niveau2, Niveau3]
+            scene: [Depart, Niveau1, Niveau2, Ecran_victoire]
 
         };
         new Phaser.Game(config);
