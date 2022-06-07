@@ -14,7 +14,7 @@
 
 <body>
     <script type="text/javascript">
-        
+
         //**********************************************************************//
         //                          Scène Départ                                //
         //**********************************************************************//
@@ -106,7 +106,7 @@
             preload() {
                 this.load.image("tiles", "assets/Sprite_pour_test.png")
                 this.load.image("tiles2", "assets/Sprite_sheets.png")
-                this.load.tilemapTiledJSON("map", "Map_Zelda_Like..JSON");
+                this.load.tilemapTiledJSON("map", "Map_Colere.JSON");
                 this.load.image('star', 'assets/star.png');
                 this.load.spritesheet('perso', 'assets/Hero.png',
                     { frameWidth: 32, frameHeight: 34 });
@@ -159,7 +159,7 @@
                 var gameOver = false;
                 var spacebar
                 var keyT
-                this.player = this.physics.add.sprite(0, 370, 'perso');
+                this.player = this.physics.add.sprite(14500, 370, 'perso');
                 this.player.setCollideWorldBounds(true);
 
                 this.sol.setCollisionByProperty({ estSolide: true });
@@ -195,19 +195,16 @@
                 this.player.body.gravity.y = 200;
                 this.player.setSize(20, 32);
                 this.cameras.main.zoom = 0.90;
-
-                this.portail = this.physics.add.group({ 
+                this.portail = this.physics.add.group({
                     allowGravity: false,
                     immovable: true
                 });
-                carteDuNiveau.getObjectLayer('portail').objects.forEach((portail_) => {
-                    const portailSprite = this.portail.create(portail_.x, portail_.y-32, 'portail').setOrigin(0);
+                carteDuNiveau.getObjectLayer('portail1').objects.forEach((portail_) => {
+                    const portailSprite = this.portail.create(portail_.x, portail_.y - 32, 'portail').setOrigin(0);
                 });
                 this.physics.add.collider(this.player, this.portail, collideportail, null, this);
 
                 this.projectileP = this.physics.add.group({ allowGravity: false, });
-                //this.physics.add.collider(this.projectile, this.destructibles, cleanProj, null, this);
-                //this.physics.add.collider(this.projectileP, this.sentinelles, degatMonstre, null, this);
                 if (typeof this.Score == 'undefined') {
                     this.Score = 0;
                 }
@@ -270,7 +267,14 @@
                     proj.setVelocity(600, 0);
 
                 }
+                
             }
+            
+        }
+        function collideportail(player, portail) {
+
+            this.scene.start("niveau2", { x: 100, y: 100 });
+            console.log("caca")
         }
         config = {
             type: Phaser.AUTO,
@@ -295,15 +299,14 @@
             preload() {
                 this.load.image("tiles", "assets/Sprite_pour_test.png")
                 this.load.image("tiles2", "assets/Sprite_sheets.png")
-                this.load.tilemapTiledJSON("map", "Map_Zelda_Like- Copie.JSON");
-                this.load.image('star', 'assets/star.png');
+                this.load.tilemapTiledJSON("map", "Map_Tristesse.JSON");
                 this.load.spritesheet('perso', 'assets/Hero.png',
                     { frameWidth: 32, frameHeight: 34 });
                 this.load.image('Bloc', 'assets/BLOCINVISIBLE.png');
-                this.load.image('background', 'assets/Background_level_colereV3.png');
+                this.load.image('background', 'assets/Background_level_tristesse.png');
                 this.load.image('projectile_tristesse', 'assets/Projectile.png');
                 this.load.image('projectile_colere', 'assets/Projectile_colere.png')
-                this.load.image('portail', 'assets/Portail_colere.png')
+                this.load.image('portail', 'assets/Portail_tristesse.png')
 
             }
 
@@ -385,18 +388,17 @@
                 this.player.setSize(20, 32);
                 this.cameras.main.zoom = 0.90;
 
-                this.portail = this.physics.add.group({ 
+                this.portail = this.physics.add.group({
                     allowGravity: false,
                     immovable: true
                 });
-                carteDuNiveau.getObjectLayer('portail').objects.forEach((portail_) => {
-                    const portailSprite = this.portail.create(portail_.x, portail_.y-32, 'portail').setOrigin(0);
+                console.log(carteDuNiveau)
+                carteDuNiveau.getObjectLayer('portail2').objects.forEach((portail_) => {
+                    const portailSprite = this.portail.create(portail_.x, portail_.y - 32, 'portail').setOrigin(0);
                 });
                 this.physics.add.collider(this.player, this.portail, collideportail, null, this);
 
                 this.projectileP = this.physics.add.group({ allowGravity: false, });
-                //this.physics.add.collider(this.projectile, this.destructibles, cleanProj, null, this);
-                //this.physics.add.collider(this.projectileP, this.sentinelles, degatMonstre, null, this);
                 if (typeof this.Score == 'undefined') {
                     this.Score = 0;
                 }
@@ -418,6 +420,7 @@
 
 
             update() {
+                console.log("niveau2")
                 console.log(this.player.body.blocked.right)
                 if (this.cursors.left.isDown) { //si la touche gauche est appuyée
                     this.player.setVelocityX(280); //alors vitesse négative en X
@@ -428,7 +431,7 @@
                     this.player.anims.play('right', true);
                 }
                 else { // sinon
-                    this.player.setVelocityX(350); //vitesse nulle
+                    this.player.setVelocityX(350);
                     this.player.anims.play('turn');
                 }
                 if (this.cursors.up.isDown && this.player.body.blocked.down) {
@@ -459,6 +462,7 @@
                     proj.setVelocity(600, 0);
 
                 }
+                
             }
         }
         config = {
@@ -511,12 +515,12 @@
                 },
             }
         }
-        function collideportail(player, portail){
+        //function collideportail(player, portail) {
 
-            this.scene.start("Ecran_victoire",{x:100,y:100});
+            //this.scene.start("Ecran_victoire", { x: 100, y: 100 });
 
-        }
-        
+        //}
+
 
 
         var config = {
