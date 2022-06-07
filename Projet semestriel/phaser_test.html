@@ -199,6 +199,7 @@
                     allowGravity: false,
                     immovable: true
                 });
+                console.log(carteDuNiveau)
                 carteDuNiveau.getObjectLayer('portail1').objects.forEach((portail_) => {
                     const portailSprite = this.portail.create(portail_.x, portail_.y - 32, 'portail').setOrigin(0);
                 });
@@ -244,7 +245,6 @@
 
                 }
                 if (this.player.body.velocity.x <= 0 && (this.player.body.onFloor())) {
-                    console.log("caca")
                     this.gameOver = true
                 }
 
@@ -274,7 +274,6 @@
         function collideportail(player, portail) {
 
             this.scene.start("niveau2", { x: 100, y: 100 });
-            console.log("caca")
         }
         config = {
             type: Phaser.AUTO,
@@ -299,7 +298,7 @@
             preload() {
                 this.load.image("tiles", "assets/Sprite_pour_test.png")
                 this.load.image("tiles2", "assets/Sprite_sheets.png")
-                this.load.tilemapTiledJSON("map", "Map_Tristesse.JSON");
+                this.load.tilemapTiledJSON("map2", "Map_Tristesse.JSON");
                 this.load.spritesheet('perso', 'assets/Hero.png',
                     { frameWidth: 32, frameHeight: 34 });
                 this.load.image('Bloc', 'assets/BLOCINVISIBLE.png');
@@ -315,28 +314,32 @@
             create() {
 
 
-                const carteDuNiveau = this.add.tilemap("map");
+                this.carteDuNiveau2 = this.add.tilemap("map2");
                 this.background = this.add.image(450, 225, 'background');
                 this.background.setScale(1.11)
 
-                const decor = carteDuNiveau.addTilesetImage(
+                const decor = this.carteDuNiveau2.addTilesetImage(
                     "sprite_sheets",
                     "tiles2"
                 );
-                const tileset = carteDuNiveau.addTilesetImage(
+                const tileset = this.carteDuNiveau2.addTilesetImage(
                     "Sprite_pour_test",
                     "tiles"
                 );
                 this.background.setScrollFactor(0)
 
-                this.sol = carteDuNiveau.createStaticLayer(
+                this.sol = this.carteDuNiveau2.createStaticLayer(
                     "bordures",
                     tileset
                 );
 
-                this.decor = carteDuNiveau.createStaticLayer(
+                this.decor = this.carteDuNiveau2.createStaticLayer(
                     "decor",
                     decor
+                );
+                this.destruction = this.carteDuNiveau2.createDynamicLayer(
+                    "destructibles",
+                    tileset
                 );
 
 
@@ -353,9 +356,10 @@
                 var keyT
                 this.player = this.physics.add.sprite(0, 370, 'perso');
                 this.player.setCollideWorldBounds(true);
-
+                this.destruction.setCollisionByProperty({ estSolide: true });
+                this.physics.add.collider(this.player, this.destruction);
                 this.sol.setCollisionByProperty({ estSolide: true });
-                this.physics.add.collider(this.player, platforms);
+                this.physics.add.collider(this.player);
 
                 this.physics.add.collider(this.player, this.sol);
                 this.anims.create({
@@ -392,13 +396,14 @@
                     allowGravity: false,
                     immovable: true
                 });
-                console.log(carteDuNiveau)
-                carteDuNiveau.getObjectLayer('portail2').objects.forEach((portail_) => {
+                
+                this.carteDuNiveau2.getObjectLayer('portail2').objects.forEach((portail_) => {
                     const portailSprite = this.portail.create(portail_.x, portail_.y - 32, 'portail').setOrigin(0);
                 });
                 this.physics.add.collider(this.player, this.portail, collideportail, null, this);
 
                 this.projectileP = this.physics.add.group({ allowGravity: false, });
+                this.physics.add.collider(this.projectileP, this.destruction, this.destructionbloc, null, this);
                 if (typeof this.Score == 'undefined') {
                     this.Score = 0;
                 }
@@ -420,8 +425,6 @@
 
 
             update() {
-                console.log("niveau2")
-                console.log(this.player.body.blocked.right)
                 if (this.cursors.left.isDown) { //si la touche gauche est appuyée
                     this.player.setVelocityX(280); //alors vitesse négative en X
                     this.player.anims.play('left', true);
@@ -453,18 +456,24 @@
                     this.player.scene.scene.restart();
                 }
                 if (Phaser.Input.Keyboard.JustDown(this.keyT)) {
-                    this.proj = this.projectileP.create(this.player.x, this.player.y, 'projectile_colere').setScale(1.25);
+                    this.proj = this.projectileP.create(this.player.x, this.player.y, 'projectile_tristesse').setScale(1.25);
                     tirer(this.player, this.proj);
                 }
                 function tirer(player, proj) {
                     proj.origineX = player.x;
                     proj.origineY = player.y;
-                    proj.setVelocity(600, 0);
+                    proj.setVelocity(700, 0);
 
                 }
                 
+                
+            }
+            destructionbloc(projectileP, destructibles){
+                projectileP.destroy()
+                this.carteDuNiveau2.removeTileAt(destructibles.x, destructibles.y);
             }
         }
+        
         config = {
             type: Phaser.AUTO,
             width: 896, height: 448,
