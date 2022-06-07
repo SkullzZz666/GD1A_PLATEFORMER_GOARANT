@@ -159,7 +159,7 @@
                 var gameOver = false;
                 var spacebar
                 var keyT
-                this.player = this.physics.add.sprite(14500, 370, 'perso');
+                this.player = this.physics.add.sprite(0, 370, 'perso');
                 this.player.setCollideWorldBounds(true);
 
                 this.sol.setCollisionByProperty({ estSolide: true });
@@ -302,10 +302,10 @@
                 this.load.spritesheet('perso', 'assets/Hero.png',
                     { frameWidth: 32, frameHeight: 34 });
                 this.load.image('Bloc', 'assets/BLOCINVISIBLE.png');
-                this.load.image('background', 'assets/Background_level_tristesse.png');
+                this.load.image('background2', 'assets/Backgroud_level_tristesse.png');
                 this.load.image('projectile_tristesse', 'assets/Projectile.png');
                 this.load.image('projectile_colere', 'assets/Projectile_colere.png')
-                this.load.image('portail', 'assets/Portail_tristesse.png')
+                this.load.image('portail2', 'assets/Portail_tristesse.png')
 
             }
 
@@ -315,7 +315,7 @@
 
 
                 this.carteDuNiveau2 = this.add.tilemap("map2");
-                this.background = this.add.image(450, 225, 'background');
+                this.background = this.add.image(450, 225, 'background2');
                 this.background.setScale(1.11)
 
                 const decor = this.carteDuNiveau2.addTilesetImage(
@@ -354,7 +354,7 @@
                 var gameOver = false;
                 var spacebar
                 var keyT
-                this.player = this.physics.add.sprite(0, 370, 'perso');
+                this.player = this.physics.add.sprite(0, 950, 'perso');
                 this.player.setCollideWorldBounds(true);
                 this.destruction.setCollisionByProperty({ estSolide: true });
                 this.physics.add.collider(this.player, this.destruction);
@@ -398,9 +398,9 @@
                 });
                 
                 this.carteDuNiveau2.getObjectLayer('portail2').objects.forEach((portail_) => {
-                    const portailSprite = this.portail.create(portail_.x, portail_.y - 32, 'portail').setOrigin(0);
+                    const portailSprite = this.portail.create(portail_.x, portail_.y - 32, 'portail2').setOrigin(0);
                 });
-                this.physics.add.collider(this.player, this.portail, collideportail, null, this);
+                this.physics.add.collider(this.player, this.portail, collideportail2, null, this);
 
                 this.projectileP = this.physics.add.group({ allowGravity: false, });
                 this.physics.add.collider(this.projectileP, this.destruction, this.destructionbloc, null, this);
@@ -524,11 +524,11 @@
                 },
             }
         }
-        //function collideportail(player, portail) {
+        function collideportail2(player, portail) {
 
-            //this.scene.start("Ecran_victoire", { x: 100, y: 100 });
+            this.scene.start("Ecran_victoire", { x: 100, y: 100 });
 
-        //}
+        }
 
 
 
