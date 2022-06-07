@@ -295,7 +295,7 @@
             preload() {
                 this.load.image("tiles", "assets/Sprite_pour_test.png")
                 this.load.image("tiles2", "assets/Sprite_sheets.png")
-                this.load.tilemapTiledJSON("map", "Map_Zelda_Like - Copie.JSON");
+                this.load.tilemapTiledJSON("map", "Map_Zelda_Like- Copie.JSON");
                 this.load.image('star', 'assets/star.png');
                 this.load.spritesheet('perso', 'assets/Hero.png',
                     { frameWidth: 32, frameHeight: 34 });
@@ -513,7 +513,7 @@
         }
         function collideportail(player, portail){
 
-            this.scene.start("Niveau2",{x:100,y:100});
+            this.scene.start("Ecran_victoire",{x:100,y:100});
 
         }
         
